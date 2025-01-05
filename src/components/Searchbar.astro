@@ -1,0 +1,47 @@
+---
+import { RiSearchLine } from '@remixicon/react';
+---
+
+<div
+	class="my-4 flex h-8 w-96 items-center overflow-hidden rounded-2xl bg-lightModeBg"
+>
+	<div class="ml-2">
+		<RiSearchLine size={20} className="text-black" />
+	</div>
+	<textarea
+		cols="1"
+		class="h-full w-full text-lightModeText"
+		name="search"
+		placeholder="Search Google"
+		id="search-area"></textarea>
+</div>
+<a id="hiddenlink" class="hidden" href="" target="_blank"></a>
+
+<script>
+	const searchbar = document.getElementById(
+		'search-area'
+	) as HTMLTextAreaElement;
+	const hiddenLink = document.getElementById(
+		'hiddenlink'
+	) as HTMLAnchorElement;
+	const googleLink = 'https://google.com/search?q=';
+
+	searchbar?.addEventListener('keypress', e => {
+		if (e.key == 'Enter') {
+			e.preventDefault();
+			let newLink = googleLink + encodeURIComponent(searchbar.value);
+			console.log('redirecting to: ' + newLink);
+			hiddenLink.href = newLink;
+			hiddenLink.click();
+		}
+	});
+</script>
+
+<style>
+	textarea {
+		@apply ml-1 overflow-x-hidden border-none outline-none;
+		line-height: 16px;
+		padding-top: 8px;
+		resize: none;
+	}
+</style>

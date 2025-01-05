@@ -1,7 +1,22 @@
 ---
-import FontImport from '@components/meta/FontImport.astro'
-import 'remixicon/fonts/remixicon.css'
+import FontImport from '@components/meta/FontImport.astro';
+import 'remixicon/fonts/remixicon.css';
+
+import axios from 'axios';
+import https from 'https';
+import Searchbar from '@components/Searchbar.astro';
+
+const httpsAgent = new https.Agent({
+	rejectUnauthorized: false,
+});
+
+const res = await axios.get('https://api.quotable.io/random', { httpsAgent });
+const body = await res.data;
+
+const quote = body.content ?? 'Happy Journey!';
+const author = body.author ?? '';
 ---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -13,8 +28,28 @@ import 'remixicon/fonts/remixicon.css'
 		<title>Start</title>
 	</head>
 	<body class="bg-darkModeBg text-darkModeText">
-		<div class="max-h-screen max-w-screen h-screen">
-			<slot />
+		<div class="max-w-screen h-screen max-h-screen">
+			<div
+				class="flex h-full w-full flex-col items-center justify-center"
+			>
+				<span id="clock" class="mb-2 font-mono text-4xl font-black"
+					>...</span
+				>
+				<h1
+					class="mx-auto max-w-[80%] text-center font-mono text-lg font-semibold"
+				>
+					{quote}
+				</h1>
+				<h1
+					class="mx-auto mb-2 text-center font-mono text-sm font-semibold text-accentColor"
+				>
+					{author}
+				</h1>
+				<Searchbar />
+				<div class="flex w-fit">
+					<slot />
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
@@ -27,3 +62,17 @@ import 'remixicon/fonts/remixicon.css'
 		height: 100%;
 	}
 </style>
+
+<script is:inline>
+	const clock = document.getElementById('clock');
+
+	function updateClock() {
+		let time = new Date();
+		let hrs = time.getHours().toString().padStart(2, '0');
+		let mins = time.getMinutes().toString().padStart(2, '0');
+		clock.textContent = hrs + ':' + mins;
+	}
+
+	updateClock();
+	setInterval(updateClock, 500);
+</script>
