@@ -1,0 +1,47 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Card from '@components/Card.astro';
+import axios from 'axios';
+import https from 'https'
+
+const httpsAgent = new https.Agent({
+	rejectUnauthorized: false
+})
+
+const res = await axios.get("https://api.quotable.io/random", { httpsAgent });
+const body = await res.data
+
+const quote = body.content ?? 'Happy Journey!';
+const author = body.author ?? "";
+---
+
+<Layout>
+	<div id="top-panel" class="w-full h-16 flex items-start justify-start">
+		<div class="h-4/5 w-40 bg-gray-800 rounded-xl my-auto ml-2 flex justify-center items-center font-mono text-xl">Meow</div>
+	</div>
+	<div id="mid-panel" class="w-full  flex-grow flex items-center justify-center flex-col">
+		<span id="clock" class="font-mono text-4xl mb-2 font-black">...</span>
+		<h1 class="text-lg font-semibold font-mono text-center mx-auto max-w-[80%]">{quote} </h1>
+		<h1 class="text-sm font-semibold mb-4 font-mono text-center mx-auto text-accentColor">{author}</h1>
+		<div class="flex w-fit">
+			<Card title="Test Card" href='https://youtube.com' />
+			<Card bgClass='bg-red-400' title="Test Card" href='https://google.com' />
+		</div>
+	</div>
+	<div id="bot-panel" class="w-full min-h-16"></div>
+</Layout>
+
+<script is:inline>
+const clock = document.getElementById("clock");
+
+function updateClock() {
+	let time = new Date();
+	let hrs = time.getHours().toString().padStart(2, "0");
+	let mins = time.getMinutes().toString().padStart(2, "0");
+	clock.textContent = hrs + ":" + mins;
+}
+
+updateClock()
+setInterval(updateClock, 500)
+
+</script>

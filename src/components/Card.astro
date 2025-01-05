@@ -1,0 +1,48 @@
+---
+import { RiExternalLinkLine, RiLink, RiUsbLine, RiYoutubeFill, type RemixiconComponentType } from '@remixicon/react';
+
+export interface Props {
+	title: string;
+	href: string;
+	bgClass?: string;
+	hoverClass?: string;
+}
+
+const { href, title, bgClass, hoverClass } = Astro.props;
+
+let bgColor = bgClass ?? "bg-accentColor"
+let bgHoverColor = hoverClass ?? "hover:bg-gray-400"
+
+let hasPresetLogo: boolean = false
+let PresetLogo: RemixiconComponentType = RiExternalLinkLine
+
+if (href.includes("youtube")) {
+	hasPresetLogo = true
+	PresetLogo = RiYoutubeFill
+}
+---
+
+<a {href} target="_blank">
+	<div class="w-32 h-32 my-2 mx-2 flex flex-col">
+		<div class:list={[bgColor, bgHoverColor, "w-full h-full rounded-xl flex justify-center items-center"]}>
+			<PresetLogo className='w-3/5 h-2/3' color='white' />
+		</div>
+		<h1 class="font-semibold text-center mx-auto">{title}</h1>
+	</div>
+</a>
+
+<style>
+a {
+	@apply font-rubik;
+}
+</style>
+
+<!-- <style define:vars={{ bgColor, bgHoverColor }}> -->
+<!-- a > div { -->
+<!-- 	background: var(--bgColor) -->
+<!-- } -->
+
+<!-- a > div:hover { -->
+<!-- 	background: var(--bgHoverColor) -->
+<!-- } -->
+<!-- </style> -->
