@@ -1,9 +1,17 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import Card from '@components/Card.astro';
+import { RiNetflixFill } from '@remixicon/react';
 ---
 
 <Layout>
-	<Card title="Test Card" href="https://youtube.com" />
-	<Card bgClass="bg-red-400" title="Test Card" href="https://google.com" />
+	<Card title="Blog" href="https://trevfox.dev/" />
+	<Card bgClass="bg-[#e62117]" title="YouTube" href="https://youtube.com/" />
+	<Card bgClass="bg-[#8956fb]" title="Twitch" href="https://twitch.tv/" />
+	<Card
+		bgClass="bg-[#E50914]"
+		icon={RiNetflixFill}
+		title="Netflix"
+		href="https://netflix.com/"
+	/>
 </Layout>

@@ -1,25 +1,10 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import Card from '@components/Card.astro';
-// let quote = ""
-// let author = ""
 ---
 
 <Layout>
-	<Card title="Test Card" href="https://youtube.com" />
-	<Card bgClass="bg-red-400" title="Test Card" href="https://google.com" />
+	<Card title="Blog" href="https://trevfox.dev/" />
+	<Card bgClass="bg-[#e62117]" title="YouTube" href="https://youtube.com/" />
+	<Card bgClass="bg-[#8956fb]" title="Twitch" href="https://twitch.tv/" />
 </Layout>
-
-<script is:inline>
-	const clock = document.getElementById('clock');
-
-	function updateClock() {
-		let time = new Date();
-		let hrs = time.getHours().toString().padStart(2, '0');
-		let mins = time.getMinutes().toString().padStart(2, '0');
-		clock.textContent = hrs + ':' + mins;
-	}
-
-	updateClock();
-	setInterval(updateClock, 500);
-</script>

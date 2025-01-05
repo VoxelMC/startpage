@@ -1,40 +1,80 @@
 ---
-import { RiExternalLinkLine, RiLink, RiUsbLine, RiYoutubeFill, type RemixiconComponentType } from '@remixicon/react';
+import {
+	RiExternalLinkLine,
+	RiGithubFill,
+	RiLink,
+	RiNewsLine,
+	RiTwitchFill,
+	RiUsbLine,
+	RiYoutubeFill,
+	type RemixiconComponentType,
+} from '@remixicon/react';
 
 export interface Props {
 	title: string;
 	href: string;
 	bgClass?: string;
 	hoverClass?: string;
+	icon?: RemixiconComponentType;
 }
 
-const { href, title, bgClass, hoverClass } = Astro.props;
+const { href, title, bgClass, hoverClass, icon } = Astro.props;
 
-let bgColor = bgClass ?? "bg-accentColor"
-let bgHoverColor = hoverClass ?? "hover:bg-gray-400"
+let bgColor = bgClass ?? 'bg-accentColor';
+let bgHoverColor = hoverClass ?? 'hover:opacity-70';
 
-let hasPresetLogo: boolean = false
-let PresetLogo: RemixiconComponentType = RiExternalLinkLine
+let PresetLogo: RemixiconComponentType = RiExternalLinkLine;
 
-if (href.includes("youtube")) {
-	hasPresetLogo = true
-	PresetLogo = RiYoutubeFill
+const presetMap: { pattern: string; logo: RemixiconComponentType }[] = [
+	{
+		pattern: 'youtube',
+		logo: RiYoutubeFill,
+	},
+	{
+		pattern: 'twitch',
+		logo: RiTwitchFill,
+	},
+	{
+		pattern: 'github',
+		logo: RiGithubFill,
+	},
+	{
+		pattern: 'trevfox',
+		logo: RiNewsLine,
+	},
+];
+
+for (let preset of presetMap) {
+	if (href.includes(preset.pattern)) {
+		PresetLogo = preset.logo;
+		break;
+	}
+}
+
+if (icon) {
+	PresetLogo = icon;
 }
 ---
 
 <a {href} target="_blank">
-	<div class="w-32 h-32 my-2 mx-2 flex flex-col">
-		<div class:list={[bgColor, bgHoverColor, "w-full h-full rounded-xl flex justify-center items-center"]}>
-			<PresetLogo className='w-3/5 h-2/3' color='white' />
+	<div class="mx-2 my-2 flex w-24 flex-col">
+		<div
+			class:list={[
+				bgColor,
+				bgHoverColor,
+				'h-ful mx-auto mb-1 flex aspect-square w-full items-center justify-center rounded-xl',
+			]}
+		>
+			<PresetLogo className="h-2/3 w-2/3" color="white" />
 		</div>
-		<h1 class="font-semibold text-center mx-auto">{title}</h1>
+		<h1 class="mx-auto text-center font-semibold">{title}</h1>
 	</div>
 </a>
 
 <style>
-a {
-	@apply font-rubik;
-}
+	a {
+		@apply font-rubik;
+	}
 </style>
 
 <!-- <style define:vars={{ bgColor, bgHoverColor }}> -->

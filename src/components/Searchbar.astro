@@ -1,16 +1,17 @@
 ---
-import { RiSearchLine } from '@remixicon/react';
+import { RiGoogleFill, RiGoogleLine, RiSearchLine } from '@remixicon/react';
 ---
 
 <div
 	class="my-4 flex h-8 w-96 items-center overflow-hidden rounded-2xl bg-lightModeBg"
 >
-	<div class="ml-2">
-		<RiSearchLine size={20} className="text-black" />
+	<div class="ml-2 mr-1">
+		<RiGoogleFill size={20} className="text-darkModeBg" />
 	</div>
 	<textarea
 		cols="1"
-		class="h-full w-full text-lightModeText"
+		class="h-full w-full bg-lightModeBg font-mono text-lightModeText placeholder:font-mono"
+		autofocus
 		name="search"
 		placeholder="Search Google"
 		id="search-area"></textarea>
@@ -25,6 +26,8 @@ import { RiSearchLine } from '@remixicon/react';
 		'hiddenlink'
 	) as HTMLAnchorElement;
 	const googleLink = 'https://google.com/search?q=';
+
+	searchbar.value = '';
 
 	searchbar?.addEventListener('keypress', e => {
 		if (e.key == 'Enter') {

@@ -1,20 +1,14 @@
 ---
-import FontImport from '@components/meta/FontImport.astro';
 import 'remixicon/fonts/remixicon.css';
 
-import axios from 'axios';
-import https from 'https';
+import FontImport from '@components/meta/FontImport.astro';
 import Searchbar from '@components/Searchbar.astro';
 
-const httpsAgent = new https.Agent({
-	rejectUnauthorized: false,
-});
+export interface Props {
+	title?: string;
+}
 
-const res = await axios.get('https://api.quotable.io/random', { httpsAgent });
-const body = await res.data;
-
-const quote = body.content ?? 'Happy Journey!';
-const author = body.author ?? '';
+const { title } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,26 +19,36 @@ const author = body.author ?? '';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<FontImport />
-		<title>Start</title>
+		<title>{title ? title : 'Launchpad'}</title>
 	</head>
 	<body class="bg-darkModeBg text-darkModeText">
 		<div class="max-w-screen h-screen max-h-screen">
 			<div
 				class="flex h-full w-full flex-col items-center justify-center"
 			>
-				<span id="clock" class="mb-2 font-mono text-4xl font-black"
-					>...</span
-				>
+				<div>
+					<span
+						id="clock-h"
+						class="mb-2 font-mono text-4xl font-black">00</span
+					><span id="blink" class="mb-2 font-mono text-4xl font-black"
+						>:</span
+					><span
+						id="clock-m"
+						class="mb-2 font-mono text-4xl font-black">00</span
+					>
+				</div>
 				<h1
+					id="quote"
 					class="mx-auto max-w-[80%] text-center font-mono text-lg font-semibold"
 				>
-					{quote}
+					...
 				</h1>
-				<h1
+				<h2
+					id="author"
 					class="mx-auto mb-2 text-center font-mono text-sm font-semibold text-accentColor"
 				>
-					{author}
-				</h1>
+					...
+				</h2>
 				<Searchbar />
 				<div class="flex w-fit">
 					<slot />
@@ -64,15 +68,44 @@ const author = body.author ?? '';
 </style>
 
 <script is:inline>
-	const clock = document.getElementById('clock');
+	const clockH = document.getElementById('clock-h');
+	const clockM = document.getElementById('clock-m');
+	const blinker = document.getElementById('blink');
 
 	function updateClock() {
 		let time = new Date();
 		let hrs = time.getHours().toString().padStart(2, '0');
 		let mins = time.getMinutes().toString().padStart(2, '0');
-		clock.textContent = hrs + ':' + mins;
+		clockH.textContent = hrs;
+		clockM.textContent = mins;
+	}
+
+	let blinkState = false;
+	function blink() {
+		if (blinkState) blinker.style.opacity = 1;
+		else blinker.style.opacity = 0;
+		blinkState = !blinkState;
 	}
 
 	updateClock();
-	setInterval(updateClock, 500);
+	setInterval(() => {
+		updateClock();
+		blink();
+	}, 700);
+</script>
+
+<script>
+	const res = await fetch(
+		'https://api.quotable.io/quotes/random?maxLength=80&tags=Courage|Creativity|Honor|Knowledge|Wisdom'
+	);
+	const body = (await res.json())[0];
+
+	const quote = body.content ?? 'Happy Journey!';
+	const author = body.author ?? '';
+
+	const quoteEl = document.getElementById('quote') as HTMLElement;
+	const authorEl = document.getElementById('author') as HTMLElement;
+
+	quoteEl.textContent = quote;
+	authorEl.textContent = author;
 </script>
