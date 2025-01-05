@@ -6,6 +6,6 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'dash.trevfox.dev',
+    site: 'https://dash.trevfox.dev',
     integrations: [tailwind(), react()],
 });
